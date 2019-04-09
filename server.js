@@ -18,7 +18,10 @@ const server = app.listen(4000, () => {
 });
 
 //socket setup
-var io = socket(server);
+const io = socket(server);
 io.on("connection", socket => {
+  socket.on("switch-image", data =>{
+    io.sockets.emit("switch-image", data);
+  })
   console.log("socket connected");
 });

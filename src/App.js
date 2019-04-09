@@ -9,14 +9,28 @@ class App extends Component {
     this.state = {
       component: 1
     };
+
+    this.socket = io("localhost:4000");
+    this.socket.on("switch-image", data => {
+      this.setState({ component: data });
+      console.log(data,"in socket data");
+    });
+
   }
 
-  switchComponent() {
+  async switchComponent() {
+    console.log(this.state.component,"before condition");
+
     if(this.state.component == 1){
-      this.setState({ component: 2 })
+      await this.setState({ component: 2 });
+      this.socket.emit("switch-image",this.state.component);
+      console.log(this.state.component,"in if condition");
     }else{
-      this.setState({ component: 1 })
+      await this.setState({ component: 1 });
+      this.socket.emit("switch-image",this.state.component);
+      console.log(this.state.component,"in else condition");
     }
+    console.log(this.state.component,"after condition");
     console.log("clicked");
   }
 
